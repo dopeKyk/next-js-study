@@ -6,22 +6,27 @@ class Page2 extends React.Component {
   static async getInitialProps(obj) {
     const text = obj.query.text || 'none';
     const data = await callApi();
+    const { sayHello } = await import('../src/sayHello');
+    console.log(sayHello());
     return { text, data };
   }
   onClick = () => {
-    Router.push('/')
+    // Router.push('/')
+    // import('../src/sayHello').then(({ sayHello }) => {
+    //   console.log(sayHello());
+    // })
   }
   render() {
     const { text, data } = this.props;
     return (
       <div>
-        <button onClick={this.onClick}>Home으로 이동</button>
         {/*<Link href="/">*/}
         {/*  <a>Home</a>*/}
         {/*</Link>*/}
         <p>this is page2</p>
         <p>{`text: ${text}`}</p>
         <p>{`data: ${data}`}</p>
+        {/*<button onClick={this.onClick}>say hello</button>*/}
       </div>
     )
   }
