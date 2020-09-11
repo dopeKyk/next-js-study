@@ -1,3 +1,4 @@
 /test-next/.next/
+/test-next/out/
 /test-ssr/dist-server/
 /test-ssr/dist/
