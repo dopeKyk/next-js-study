@@ -1,12 +1,3 @@
-// const express = require('express');
-//
-// const server = express();
-// server.use(express.static('out'));
-// server.listen(3000, err => {
-//   if (err) throw err;
-// })
-
-
 const express = require('express');
 const next = require('next');
 const url = require('url');
@@ -41,32 +32,15 @@ app.prepare().then(() => {
   })
 });
 
-const fs = require('fs');
-const prerenderList = [
-  { name: 'page1', path: '/page1' },
-  { name: 'page2-hello', path: '/page2?text=hello'},
-  { name: 'page2-world', path: '/page2?text=world' },
-];
-const prerenderCache = {};
-if(!dev) {
-  for (const info of prerenderList) {
-    const { name, path } = info;
-    const html = fs.readFileSync(`./out/${name}.html`, 'utf8');
-    prerenderCache[path] = html;
-  }
-}
-
 async function renderAndCache(req, res) {
   const parsedUrl = url.parse(req.url, true);
   const cacheKey = parsedUrl.path;
+  // console.log('parsedUrl: ', parsedUrl);
+  // console.log('cacheKey: ', cacheKey);
+  // console.log('ssrCache.has(cacheKey): ', ssrCache.has(cacheKey));
   if (ssrCache.has(cacheKey)) {
     console.log('캐시사용');
     res.send(ssrCache.get(cacheKey));
-    return;
-  }
-  if (prerenderCache.hasOwnProperty(cacheKey)) {
-    console.log('프리렌더 html 사용');
-    res.send(prerenderCache[cacheKey]);
     return;
   }
   const { query, pathname } = parsedUrl;
